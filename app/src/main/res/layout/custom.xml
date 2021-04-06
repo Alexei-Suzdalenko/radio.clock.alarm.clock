@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="20dp"
+    android:background="@color/black"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleCustom"
+        android:layout_marginTop="11dp"
+        android:textColor="@color/white"
+        android:text="@string/set_time_toAlarm"
+        android:textSize="18sp"
+        android:layout_marginBottom="43dp"
+        />
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <NumberPicker
+            android:theme="@style/NumberPickerTheme"
+            android:id="@+id/numberPicker_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="37sp"
+            android:text="@string/delemiter"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <NumberPicker
+            android:theme="@style/NumberPickerTheme"
+            android:id="@+id/numberPicker_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="43dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/cancelDialog"
+            android:text="@string/cancel"
+            android:background="@color/gris"
+            android:layout_margin="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ButtonStyle" />
+        <Button
+            android:id="@+id/goToWork"
+            android:background="@color/gris"
+            android:text="@string/go"
+            android:layout_margin="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ButtonStyle" />
+    </LinearLayout>
+</LinearLayout>

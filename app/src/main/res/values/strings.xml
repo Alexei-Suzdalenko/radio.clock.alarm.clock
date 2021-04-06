@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Radio Clock Alarm</string>
+    <string name="off">Off</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
+    <string name="set_time_toAlarm"> </string>
+    <string name="delemiter">:</string>
+    <string name="cancel">Сancel</string>
+    <string name="go">Set</string>
+    <string name="titleDialogText"> </string>
+    <string name="country">Country</string>
+    <string name="radio">Radio</string>
+    <string name="disable_notification">Disable notification</string>
+    <string name="ask_about_stations">If you can t find your favorite radio station in the app, specify it in the comments and I ll add it to the app in a few hours!</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayoutGeneral"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/set_alarm"
+                    android:layout_marginTop="71dp"
+                    android:id="@+id/setTime"
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="131dp"
+                    android:layout_height="131dp" />
+                <LinearLayout
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="51dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="UseCompoundDrawables">
+                    <ImageView
+                        android:visibility="gone"
+                        android:src="@drawable/icon_alarm"
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/image"
+                        android:contentDescription="@string/app_name"
+                        android:layout_width="31dp"
+                        android:layout_height="31dp" />
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/orbitron_medium"
+                        android:text="@string/off"
+                        android:textColor="@color/teal_200"
+                        android:textSize="71sp" />
+                </LinearLayout>
+                <ImageView
+                    android:src="@drawable/off"
+                    android:layout_marginTop="71dp"
+                    android:id="@+id/soundOff"
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="71dp"
+                    android:layout_height="71dp" />
+            </LinearLayout>
+    </ScrollView>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-7286158310312043/6373745548">
+    </com.google.android.gms.ads.AdView>
+</RelativeLayout>
