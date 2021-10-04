@@ -116,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                 a.dismiss() }
             alertDialog.show()
         }
+       // App.globalEditor.putString("askAboutAddStations", "askAboutAddStations");
     }
 
 

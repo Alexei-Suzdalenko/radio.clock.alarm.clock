@@ -64,10 +64,7 @@ class SetCountry : AppCompatActivity() {
                         listViewCountry.adapter = adapter
                         progressBarCountry.visibility = View.GONE
                         listViewCountry.setOnItemClickListener { _, _, position, _ ->
-                            App.globalEditor.putString(
-                                "country", jsonResponses[position].getString(
-                                    "name"
-                                )
+                            App.globalEditor.putString("country", jsonResponses[position].getString("name")
                             ); App.globalEditor.commit()
                             Toast.makeText(
                                 this,
