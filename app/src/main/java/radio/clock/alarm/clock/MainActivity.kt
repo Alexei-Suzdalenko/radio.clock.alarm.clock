@@ -22,6 +22,8 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom.view.*
 import radio.clock.alarm.clock.utils.App
@@ -37,7 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var edit: SharedPreferences.Editor
     private var nameRadio = ""
     lateinit var mAdView: AdView
-
+    private var mInterstitialAd: InterstitialAd? = null
+    lateinit var adRequest: AdRequest
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +48,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         askAboutAddStations()
         title = " "
+
+        adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, "ca-app-pub-7286158310312043/5060663877", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+            }
+        })
 
        MobileAds.initialize(this){}
        mAdView = findViewById(R.id.adView)
@@ -68,7 +78,9 @@ class MainActivity : AppCompatActivity() {
         setVisibilityAlarm()
 
         setTime.setOnClickListener {setAlarmForTime()}
-        soundOff.setOnClickListener{startActivity(Intent(this, Off::class.java))}
+        soundOff.setOnClickListener{
+            if (mInterstitialAd != null) { mInterstitialAd?.show(this) }
+            startActivity(Intent(this, Off::class.java))}
 
         var mService: ServiceAlarmClock? = null
         var mBound = false
@@ -85,17 +97,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        val powerManager = applicationContext.getSystemService(POWER_SERVICE) as PowerManager
-        val packageName = "radio.clock.alarm.clock"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val i = Intent()
-            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-                i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                i.data = Uri.parse("package:$packageName")
-                startActivity(i)
+        try {
+            val powerManager = applicationContext.getSystemService(POWER_SERVICE) as PowerManager
+            val packageName = "radio.clock.alarm.clock"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val i = Intent()
+                if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                    i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                    i.data = Uri.parse("package:$packageName")
+                    startActivity(i)
+                }
             }
-        }
+        } catch (e: Exception) {}
 
     }
 
@@ -182,6 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun setAlarmForTime(){
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.custom, null)
         val builder = AlertDialog.Builder(this).setView(mDialogView).setTitle("")
@@ -217,18 +231,9 @@ class MainActivity : AppCompatActivity() {
             var milliseconds = calendar.timeInMillis
             if( milliseconds < System.currentTimeMillis() ) milliseconds += 86400000
             val intent        = Intent(context, ReceiverAlarmClock::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    milliseconds,
-                    pendingIntent
-                )
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, milliseconds, pendingIntent)
             } else { alarmManager.setExact(AlarmManager.RTC_WAKEUP, milliseconds, pendingIntent) }
 
             edit.putLong("dataTimeLongSetAlarm", milliseconds)
