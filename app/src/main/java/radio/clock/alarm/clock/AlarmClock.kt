@@ -36,7 +36,7 @@ class AlarmClock : AppCompatActivity() {
 
 
         off.setOnClickListener{
-            if (App.player.isPlaying) App.player.stop()
+            if (App.player?.isPlaying == true) App.player!!.stop()
             if (App.mp.isPlaying)     App.mp.stop()
             startActivity(Intent(this, MainActivity::class.java))
             finish()

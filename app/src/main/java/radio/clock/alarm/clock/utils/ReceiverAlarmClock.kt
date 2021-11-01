@@ -6,23 +6,43 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import radio.clock.alarm.clock.AlarmClock
 import radio.clock.alarm.clock.MainActivity
 import radio.clock.alarm.clock.utils.App.Companion.globalSharedPreferences
 
 class ReceiverAlarmClock : BroadcastReceiver() {
+    lateinit var pm: PowerManager
+    lateinit var wl: PowerManager.WakeLock
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var alarmManager: AlarmManager
+
+    @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, intent: Intent?) {
 
+        try {
+            pm = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
+            wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "kio")
+            wl.acquire(2*600*1000L )
+            val wakeIntent = Intent()
+            wakeIntent.setClassName("radio.clock.alarm.clock", "radio.clock.alarm.clock.MainActivity")
+            wakeIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(wakeIntent)
+            val notification: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val r = RingtoneManager.getRingtone(context, notification)
+            r.play()
+            wl.release()
+        } catch (e: Exception) {
+            val i = Intent(context?.applicationContext, MainActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            context?.startActivity(i)
+        }
         startSound(context!!)
-
-        val i = Intent(context.applicationContext, MainActivity::class.java)
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(i)
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -39,8 +59,7 @@ class ReceiverAlarmClock : BroadcastReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next, pendingIntent)
         } else { alarmManager.setExact(AlarmManager.RTC_WAKEUP, next, pendingIntent) }
 
-        val puth = globalSharedPreferences.getString("url_radio", "http://89.179.72.53:8070/live").toString()
-        if (isInternetAvailable(context)){ App.play(context, puth)
+        if (isInternetAvailable(context)){ App.play(context)
         } else App.mpPlay(context)
     }
 

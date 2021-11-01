@@ -46,13 +46,28 @@
                         android:textColor="@color/teal_200"
                         android:textSize="71sp" />
                 </LinearLayout>
-                <ImageView
-                    android:src="@drawable/off"
-                    android:layout_marginTop="71dp"
-                    android:id="@+id/soundOff"
-                    android:contentDescription="@string/app_name"
-                    android:layout_width="71dp"
-                    android:layout_height="71dp" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/play"
+                        android:layout_marginTop="71dp"
+                        android:id="@+id/playSound"
+                        android:layout_marginEnd="11dp"
+                        android:contentDescription="@string/app_name"
+                        android:layout_width="71dp"
+                        android:layout_height="71dp" />
+                    <ImageView
+                        android:layout_marginStart="11dp"
+                        android:src="@drawable/off"
+                        android:layout_marginTop="71dp"
+                        android:id="@+id/soundOff"
+                        android:contentDescription="@string/app_name"
+                        android:layout_width="71dp"
+                        android:layout_height="71dp" />
+                </LinearLayout>
             </LinearLayout>
     </ScrollView>
     <com.google.android.gms.ads.AdView

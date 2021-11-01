@@ -55,7 +55,7 @@ class SetRadioChannel : AppCompatActivity() {
                     "Ukraine" ->  { URL("https://android-soft.github.io/alarm_app/stations/ua.js").readText() }
                     "Belorus" ->  { URL("https://android-soft.github.io/alarm_app/stations/bl.js").readText() }
                     else -> { // Russia
-                        URL("https://android-soft.github.io/alarm_app/stations/rus.js").readText()
+                        URL("https://alexei-suzdalenko.github.io/r-radio/rus-radio.js").readText()
                     }
                 }
                 val resultUrl = JSONObject(response)
@@ -84,6 +84,7 @@ class SetRadioChannel : AppCompatActivity() {
         App.globalEditor.putString("url_radio", url_radio)
         App.globalEditor.apply()
         Toast.makeText(this, name_radio, Toast.LENGTH_LONG).show()
+        App.play(this)
         finish()
     }
 }

@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="radio.alarm.Index">
     <item
-        android:id="@+id/country"
+        android:id="@+id/radio"
         android:orderInCategory="100"
-        android:title="@string/country"
+        android:icon="@drawable/list"
+        app:showAsAction="always"
+        android:title="@string/radio"
         />
     <item
-        android:id="@+id/radio"
+        android:id="@+id/country"
         android:orderInCategory="110"
-        android:title="@string/radio"
-         />
+        android:title="@string/country"
+        />
     <item
         android:id="@+id/share"
         android:orderInCategory="110"

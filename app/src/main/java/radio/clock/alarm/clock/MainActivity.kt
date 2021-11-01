@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom.view.*
 import radio.clock.alarm.clock.utils.App
 import radio.clock.alarm.clock.utils.App.Companion.globalEditor
+import radio.clock.alarm.clock.utils.App.Companion.globalSharedPreferences
 import radio.clock.alarm.clock.utils.ReceiverAlarmClock
 import radio.clock.alarm.clock.utils.ServiceAlarmClock
 import java.util.*
@@ -45,16 +46,8 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main); try{ title = "" } catch (e: Exception){}
         askAboutAddStations()
-        title = " "
-
-        adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(this, "ca-app-pub-7286158310312043/5060663877", adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                mInterstitialAd = interstitialAd
-            }
-        })
 
        MobileAds.initialize(this){}
        mAdView = findViewById(R.id.adView)
@@ -66,10 +59,7 @@ class MainActivity : AppCompatActivity() {
                    val heidhtAdview = mAdView.height + 7
                    val layoutParams = scrollView.layoutParams as RelativeLayout.LayoutParams
                    layoutParams.setMargins(0, 0, 0, heidhtAdview)
-                   scrollView.layoutParams = layoutParams
-               }
-           }
-       }
+                   scrollView.layoutParams = layoutParams }}}
 
         context           = this
         alarmManager      = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -78,9 +68,8 @@ class MainActivity : AppCompatActivity() {
         setVisibilityAlarm()
 
         setTime.setOnClickListener {setAlarmForTime()}
-        soundOff.setOnClickListener{
-            if (mInterstitialAd != null) { mInterstitialAd?.show(this) }
-            startActivity(Intent(this, Off::class.java))}
+        playSound.setOnClickListener { App.play(this); Toast.makeText(context, "START", Toast.LENGTH_LONG).show() }
+        soundOff.setOnClickListener{ if (mInterstitialAd != null) { mInterstitialAd?.show(this) }; App.stop(); chargeAdd(); App.mpStop() }
 
         var mService: ServiceAlarmClock? = null
         var mBound = false
@@ -90,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 mService = binder.getService()
                 mBound = true
             }
-
             override fun onServiceDisconnected(name: ComponentName) {
                 mService = null
                 mBound = false
@@ -255,6 +243,12 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.startForegroundService(this, i)
             alertDialog.dismiss()
         }
+    }
+
+    private fun chargeAdd(){
+        adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, "ca-app-pub-7286158310312043/5060663877", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) { mInterstitialAd = interstitialAd }})
     }
 
 }

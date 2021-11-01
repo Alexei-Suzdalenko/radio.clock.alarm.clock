@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import radio.clock.alarm.clock.MainActivity
-import radio.clock.alarm.clock.Off
 import radio.clock.alarm.clock.R
 import java.util.*
 
@@ -27,13 +26,13 @@ class ServiceAlarmClock : Service() {
         super.onCreate()
         sharedPreferences = getSharedPreferences("radio", Context.MODE_PRIVATE)
         dataTimeString    = sharedPreferences.getString("dataTimeString", "Error").toString()
-        name_radio        = sharedPreferences.getString("name_radio", "none").toString()
+        name_radio  = App.globalSharedPreferences.getString("name_radio", "").toString()
         title             = dataTimeString
         offSound          = "Off Sound"
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notificationIntent = Intent(this, Off::class.java)
+        val notificationIntent = Intent(this, MainActivity::class.java)
 
         var goToIndexPrepare: Intent? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
