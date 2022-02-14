@@ -17,7 +17,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/set_alarm"
-                    android:layout_marginTop="71dp"
+                    android:layout_marginTop="41dp"
                     android:id="@+id/setTime"
                     android:contentDescription="@string/app_name"
                     android:layout_width="131dp"

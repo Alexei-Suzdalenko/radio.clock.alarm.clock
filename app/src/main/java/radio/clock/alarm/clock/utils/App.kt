@@ -9,12 +9,13 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 
 class App: Application() {
     companion object{
-        var player: SimpleExoPlayer? = null
+        var player: ExoPlayer ? = null
         lateinit var mp: MediaPlayer
         lateinit var globalSharedPreferences: SharedPreferences
         lateinit var globalEditor: SharedPreferences.Editor
@@ -22,7 +23,7 @@ class App: Application() {
 
         fun play(c: Context){
             val puth = globalSharedPreferences.getString("url_radio", "http://89.179.72.53:8070/live").toString()
-            if( player == null ){ player = SimpleExoPlayer.Builder( c ).build() }
+            if( player == null ){ player = ExoPlayer.Builder(c).build() }
             player!!.setMediaItem(MediaItem.fromUri( puth ))
             player!!.prepare()
             player!!.play()
@@ -37,7 +38,7 @@ class App: Application() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreate() {
         super.onCreate()
-        player = SimpleExoPlayer.Builder( this ).build()
+        player = ExoPlayer.Builder(this).build()
         val n        = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         mp           = MediaPlayer.create(this, n)
         createMyNotificationChannel()

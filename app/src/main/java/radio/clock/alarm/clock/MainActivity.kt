@@ -219,7 +219,12 @@ class MainActivity : AppCompatActivity() {
             var milliseconds = calendar.timeInMillis
             if( milliseconds < System.currentTimeMillis() ) milliseconds += 86400000
             val intent        = Intent(context, ReceiverAlarmClock::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent: PendingIntent
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                 pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
+            } else{
+                 pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            }
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, milliseconds, pendingIntent)
             } else { alarmManager.setExact(AlarmManager.RTC_WAKEUP, milliseconds, pendingIntent) }

@@ -2,6 +2,7 @@ package radio.clock.alarm.clock.utils
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -55,9 +56,11 @@ class ReceiverAlarmClock : BroadcastReceiver() {
         edit.putLong("dataTimeLong", next); edit.apply()
         
         val intent        = Intent(context, ReceiverAlarmClock::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next, pendingIntent)
-        } else { alarmManager.setExact(AlarmManager.RTC_WAKEUP, next, pendingIntent) }
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, FLAG_UPDATE_CURRENT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next, pendingIntent)
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, next, pendingIntent) }
 
         if (isInternetAvailable(context)){ App.play(context)
         } else App.mpPlay(context)

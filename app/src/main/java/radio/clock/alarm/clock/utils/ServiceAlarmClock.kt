@@ -1,5 +1,7 @@
 package radio.clock.alarm.clock.utils
+import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -31,6 +33,7 @@ class ServiceAlarmClock : Service() {
         offSound          = "Off Sound"
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val notificationIntent = Intent(this, MainActivity::class.java)
 
@@ -42,9 +45,15 @@ class ServiceAlarmClock : Service() {
             goToIndexPrepare = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             goToIndexPrepare.data = Uri.parse("package:$packageName");
         }
-
-        val pendingIntent      = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-        val goToIndex          = PendingIntent.getActivity(this, 1, goToIndexPrepare, 0)
+        val pendingIntent: PendingIntent
+        val goToIndex: PendingIntent
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pendingIntent      = PendingIntent.getActivity(this, 0, notificationIntent, FLAG_MUTABLE)
+            goToIndex          = PendingIntent.getActivity(this, 1, goToIndexPrepare, FLAG_MUTABLE)
+        } else{
+            pendingIntent      = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+            goToIndex          = PendingIntent.getActivity(this, 1, goToIndexPrepare, 0)
+        }
         val notification       = NotificationCompat.Builder(this, App.channel_id)
             .setContentTitle(title)
             .setContentText(name_radio)
