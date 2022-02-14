@@ -4,14 +4,14 @@ plugins {
     id 'kotlin-android-extensions'
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "radio.clock.alarm.clock"
         minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 7
-        versionName "7.0.1"
+        targetSdkVersion 31
+        versionCode 8
+        versionName "7.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
